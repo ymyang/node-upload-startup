@@ -20,6 +20,7 @@
     "body-parser": "^1.14.1",
     "connect-timeout": "^1.7.0",
     "express": "^4.13.3",
+    "fdfs": "^0.7.0",
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.7"

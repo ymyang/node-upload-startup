@@ -6,7 +6,8 @@ var express = require('express');
 var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
-var uuid = require('node-uuid')
+var uuid = require('node-uuid');
+var FdfsStorage = require('../utils/FdfsStorage.js');
 var UploadCtrl = require('../controller/UploadCtrl.js');
 
 
@@ -27,6 +28,18 @@ var storage = multer.diskStorage({
         cb(null, fn);
     }
 });
+
+//var fdfsStorage = FdfsStorage({
+//    trackers: [
+//        {
+//            "host": "192.168.1.120",
+//            "port": 22122
+//        }
+//    ],
+//    timeout: 10000,
+//    defaultExt: '',
+//    charset: 'utf8'
+//});
 
 var upload = multer({
     storage: storage,
