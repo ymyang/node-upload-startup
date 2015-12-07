@@ -1,10 +1,8 @@
 /**
  * Created by yang on 2015/12/3.
  */
-const TAG = '[fdfs]';
-var fs = require('fs');
 var path = require('path');
-var stream = require('stream');
+var util = require('util');
 var FdfsClient = require('fdfs');
 
 module.exports = function (opts) {
@@ -16,47 +14,31 @@ function FdfsStorage (opts) {
 }
 
 FdfsStorage.prototype._handleFile = function(req, file, cb) {
-    console.log(TAG, '_handleFile:', file);
     var ext = path.extname(file.originalname);
     if (ext) {
         ext = ext.substring(1);
     }
+
+    var param = req.body.param;
+    if (util.isString(param)) {
+        try {
+            param = JSON.parse(param);
+        } catch(err) {
+            cb(err);
+        }
+    }
+
+    if (!param || !param.fileSize) {
+        cb(new Error('param.fileSize is missed'));
+        return;
+    }
+
+    var size = param.fileSize;
+
     var options = {
-        size: req.query.fs,
+        size: size,
         ext: ext
-
     };
-    console.log(TAG, 'options:', options);
-
-    //var finalPath = 'd:/upload.jpg';
-    //var outStream = fs.createWriteStream(finalPath);
-    //file.stream.pipe(outStream);
-    //outStream.on('error', cb);
-    //outStream.on('finish', function () {
-    //    cb(null, {
-    //        path: finalPath,
-    //        size: outStream.bytesWritten
-    //    })
-    //});
-    //return;
-
-    //var readStream = new stream.Readable;
-    //readStream._read = function(){
-    //};
-    //
-    //var size = 0;
-    //
-    //file.stream.on('end', function() {
-    //    console.log(TAG, 'end:', size);
-    //    readStream.push(null);
-    //});
-    //
-    //file.stream.on('data', function(data) {
-    //    console.log(TAG, 'data');
-    //    readStream.push(data);
-    //    size += data.length;
-    //});
-
 
     var _self = this;
     _self.fdfs.upload(file.stream, options, function (err, fileId) {
@@ -65,12 +47,12 @@ FdfsStorage.prototype._handleFile = function(req, file, cb) {
             return;
         }
         cb(null, {
-            filename: fileId
+            filename: fileId,
+            size: size
         });
     });
 };
 
 FdfsStorage.prototype._removeFile = function(req, file, cb) {
-    logger.debug(TAG, '_removeFile:', file);
     this.fdfs.del(file.filename, cb);
 };

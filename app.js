@@ -20,7 +20,7 @@ app.disable('x-powered-by');
 // routes
 app.use('/', routes);
 
-var port = 3000;
+var port = 3003;
 var server = http.createServer(app);
 server.listen(port);
 

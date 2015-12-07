@@ -13,36 +13,36 @@ var UploadCtrl = require('../controller/UploadCtrl.js');
 
 var router = module.exports = express.Router();
 
-var uploaddir = 'd:/temp';
-
-if (!fs.existsSync(uploaddir)) {
-    fs.mkdirSync(uploaddir);
-}
-
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, uploaddir);
-    },
-    filename: function(req, file, cb) {
-        var fn = uuid() + path.extname(file.originalname);
-        cb(null, fn);
-    }
-});
-
-//var fdfsStorage = FdfsStorage({
-//    trackers: [
-//        {
-//            "host": "192.168.1.120",
-//            "port": 22122
-//        }
-//    ],
-//    timeout: 10000,
-//    defaultExt: '',
-//    charset: 'utf8'
+//var uploaddir = 'd:/temp';
+//
+//if (!fs.existsSync(uploaddir)) {
+//    fs.mkdirSync(uploaddir);
+//}
+//
+//var storage = multer.diskStorage({
+//    destination: function(req, file, cb) {
+//        cb(null, uploaddir);
+//    },
+//    filename: function(req, file, cb) {
+//        var fn = uuid() + path.extname(file.originalname);
+//        cb(null, fn);
+//    }
 //});
 
+var fdfsStorage = FdfsStorage({
+    trackers: [
+        {
+            "host": "192.168.1.120",
+            "port": 22122
+        }
+    ],
+    timeout: 10000,
+    defaultExt: '',
+    charset: 'utf8'
+});
+
 var upload = multer({
-    storage: storage,
+    storage: fdfsStorage,
     limits: {
         // 文件大小限制10G
         fileSize: 10*1024*1024*1024,
