@@ -7,6 +7,7 @@ var request = require('request');
 describe('test upload', function() {
 
     it.only('upload', function(done) {
+        this.timeout(0);
         var file = 'd:/test.jpg';
         var stream = fs.createReadStream(file);
         var transferSize = 0;
@@ -26,7 +27,7 @@ describe('test upload', function() {
             file: stream
         };
         request.post({
-            url: 'http://192.168.1.120:3003/upload/file',
+            url: 'http://192.168.1.120/yang/upload/file',
             formData: form
         }, function(err, res, body) {
             if (!err) {
