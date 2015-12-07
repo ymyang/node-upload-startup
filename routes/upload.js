@@ -7,6 +7,7 @@ var multer = require('multer');
 var fs = require('fs');
 var path = require('path');
 var uuid = require('node-uuid');
+var FdfsClient = require('fdfs');
 var FdfsStorage = require('../utils/FdfsStorage.js');
 var UploadCtrl = require('../controller/UploadCtrl.js');
 
@@ -29,7 +30,7 @@ var router = module.exports = express.Router();
 //    }
 //});
 
-var fdfsStorage = FdfsStorage({
+var fdfs = new FdfsClient({
     trackers: [
         {
             "host": "192.168.1.120",
@@ -40,6 +41,8 @@ var fdfsStorage = FdfsStorage({
     defaultExt: '',
     charset: 'utf8'
 });
+
+var fdfsStorage = FdfsStorage(fdfs);
 
 var upload = multer({
     storage: fdfsStorage,

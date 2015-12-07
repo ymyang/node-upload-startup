@@ -23,7 +23,11 @@
     "fdfs": "^0.8.1",
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
-    "multer-fdfs-storage": "^1.0.1",
+    "multer-fdfs-storage": "^1.0.2",
     "node-uuid": "^1.4.7"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "request": "^2.67.0"
   }
 }
